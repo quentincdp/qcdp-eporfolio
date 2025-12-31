@@ -17,38 +17,175 @@
 			<div id="wrapper">
 
 				<!-- Main -->
-					<div id="main">
-						<div class="inner">
+				<div id="main">
+					<div class="inner">
+		
+						<!-- Header -->
+						<header id="header">
+							<a href="index.html" class="logo"><strong>e</strong>Portfolio</a>
+							<ul class="icons">
+								<li><a href="#" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+							</ul>
+						</header>
+		
+						
+		
+						<!-- Projects Grid -->
+						<section id="projects">
+						<header class="main">
+							<h1>Projects & Productions</h1>
+							<p>A showcase of technical engineering challenges, software development, and social impact initiatives.</p>
+						</header>
 
-							<!-- Header -->
-								<header id="header">
-									<a href="index.html" class="logo"><strong>e</strong>Portfolio</a>
-									<ul class="icons">
-										<li><a href="#" class="icon brands fa-linkedin"><span class="label">Linkedin</span></a></li>
-									</ul>
-								</header>
-								
-								<h1>Projects & Productions</h1>
-								<h3>Work in Progress</h3>
-								<blockquote>
-									I am currently working on the design and content of this section. Please check back soon to see the complete portfolio. Thank you for your patience.
-								</blockquote>
-								
-								<h3>Progress Status</h3>
-								<pre><code>let progress = 0;
+						<div class="projects-grid">
 
-while (portfolio.isReady === false) {
-    console.log("Iteration " + progress + ": Adding creativity and coffee...");
-    portfolio.design();
-    progress++;
-}
+							<div class="project-card" onclick="openModal(this)" 
+								data-title="Eco-Efficient Cargo Drone Prototype" 
+								data-img="images/drone_exemple.jpg"> <div class="card-image">
+									<img src="images/drone_exemple.jpg" alt="Drone Prototype">
+									<div class="overlay">
+										<span class="icon solid fa-search-plus"></span>
+									</div>
+								</div>
+								<div class="card-content">
+									<h3>Eco-Efficient Cargo Drone</h3>
+									<div class="tags">
+										<span>SolidWorks</span><span>Ansys Fluent</span><span>Fusion360</span><span>3D Printing</span>
+									</div>
+									<p class="summary">Design and prototyping of a low-energy transport drone using additive manufacturing.</p>
+									<div class="full-description" style="display:none;">
+										<p><strong>Objective:</strong> To engineer a new type of material transport drone focused on minimizing energy consumption for extended range.</p>
+										<p><strong>Engineering Process:</strong> Use of CAD tools (SolidWorks, Autodesk Fusion 360) for aerodynamic modeling and CFD analysis via Ansys Fluent. Prototyping is conducted iteratively using a Creality Ender 3 3D printer.</p>
+										<p><strong>Automation:</strong> Developed Python scripts to automate repetitive data extraction and file management tasks during the testing phase.</p>
+										<p><strong>Status:</strong> In active prototyping phase, focusing on weight optimization and propulsion efficiency.</p>
+									</div>
+								</div>
+							</div>
 
-console.log("Portfolio ready after " + progress + " cups of coffee. Stay tuned!");
-								</code></pre>
+							<div class="project-card" onclick="openModal(this)" 
+								data-title="Software Engineering & Algorithms" 
+								data-img="images/version-img.jpg"> <div class="card-image">
+									<img src="images/version-img.jpg" alt="Software Dev">
+									<div class="overlay">
+										<span class="icon solid fa-code"></span>
+									</div>
+								</div>
+								<div class="card-content">
+									<h3>Software & Algorithms</h3>
+									<div class="tags">
+										<span>Python</span><span>JS/HTML/CSS</span><span>AI Models</span><span>PERT</span>
+									</div>
+									<p class="summary">Full-stack web development, game logic automation, and algorithmic optimization.</p>
+									<div class="full-description" style="display:none;">
+										<p><strong>Web Development:</strong> Conception and front-end implementation of this e-portfolio using HTML, CSS, and JavaScript.</p>
+										<p><strong>Game Logic & AI:</strong> developed a Python-based "Connect 4" game integrating AI models (Minimax/Alpha-Beta pruning). Automated the rules and UI for the board game "Cogitus".</p>
+										<p><strong>Project Management:</strong> Implemented PERT (Program Evaluation and Review Technique) algorithms to analyze project flows and optimize temporal organization.</p>
+									</div>
+								</div>
+							</div>
 
+							<div class="project-card" onclick="openModal(this)" 
+								data-title="The Hilbert Spaces Handbook" 
+								data-img="images/hilbert-book.png"> <div class="card-image">
+									<img src="images/hilbert-book.png" alt="Math Book">
+									<div class="overlay">
+										<span class="icon solid fa-book"></span>
+									</div>
+								</div>
+								<div class="card-content">
+									<h3>The Hilbert Spaces Handbook</h3>
+									<div class="tags">
+										<span>Linear Algebra</span><span>Quantum Mechanics</span><span>Signal Processing</span>
+									</div>
+									<p class="summary">Co-authored an academic book democratizing complex mathematical concepts for engineering applications.</p>
+									<div class="full-description" style="display:none;">
+										<p><strong>Context:</strong> Written during the 'Prépa des INP' engineering preparatory program in collaboration with four colleagues.</p>
+										<p><strong>Scope:</strong> The book bridges the gap between fundamental linear algebra and Master's level theory. It focuses on the concrete utility of Hilbert Spaces in the contemporary world.</p>
+										<p><strong>Applications Covered:</strong>
+											<ul>
+												<li>Signal Processing</li>
+												<li>Quantum Mechanics</li>
+												<li>Differential Equations</li>
+												<li>Statistical Learning</li>
+											</ul>
+										</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="project-card" onclick="openModal(this)" 
+								data-title="Nepal: Humanitarian & STEM Initiative" 
+								data-img="images/sikles-village.jpg"> <div class="card-image">
+									<img src="images/sikles-village.jpg" alt="Nepal Project">
+									<div class="overlay">
+										<span class="icon solid fa-globe-asia"></span>
+									</div>
+								</div>
+								<div class="card-content">
+									<h3>Nepal STEM Initiative</h3>
+									<div class="tags">
+										<span>Logistics</span><span>IT Hardware</span><span>Pedagogy</span><span>Docu-making</span>
+									</div>
+									<p class="summary">IT Infrastructure deployment and scientific popularization mission in Sikles, Nepal.</p>
+									<div class="full-description" style="display:none;">
+										<p><strong>Mission Overview:</strong> A 3-week logistics and educational mission with the Human7 association. Produced a documentary and managed corporate sponsorship.</p>
+										<p><strong>Technical Impact:</strong>
+											<ul>
+												<li>Refurbished and reorganized a computer lab using hardware donations from Pokhara and Kathmandu.</li>
+												<li>Installed educational software (Scratch, PHET, GCompris, Thonny) and repaired hardware.</li>
+												<li>Created digital resources (User manuals, exercise banks) contextualized to the local environment (e.g., field area calculations, gravity simulations).</li>
+											</ul>
+										</p>
+										<p><strong>Social Impact:</strong> Conducted "hands-on" scientific experiments using local materials to translate theoretical laws into practice.</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="project-card" onclick="openModal(this)" 
+								data-title="Interactive Media & Production" 
+								data-img="images/logo_tvn7.png"> <div class="card-image">
+									<img src="images/logo_tvn7.png" alt="Audiovisual">
+									<div class="overlay">
+										<span class="icon solid fa-film"></span>
+									</div>
+								</div>
+								<div class="card-content">
+									<h3>Interactive Media & Production</h3>
+									<div class="tags">
+										<span>Unreal Engine 5</span><span>Godot</span><span>Blender</span><span>Cinematography</span>
+									</div>
+									<p class="summary">Video game development and professional audiovisual production for commercial and creative clients.</p>
+									<div class="full-description" style="display:none;">
+										<p><strong>Game Dev:</strong> Developing a philosophical video game using Godot and UE5, focusing on cinematic quality and narrative depth regarding human perspective.</p>
+										<p><strong>Audiovisual Production:</strong> Active member of a production association. Portfolio includes:
+											<ul>
+												<li>Symphonic concert multi-cam recording.</li>
+												<li>Commercial advertising clips.</li>
+												<li>Short films and event aftermovies.</li>
+											</ul>
+										</p>
+									</div>
+								</div>
+							</div>
 
 						</div>
+					</section>
+
+					<div id="projectModal" class="modal">
+						<div class="modal-content">
+							<span class="close" onclick="closeModal()">&times;</span>
+							<div class="modal-header">
+								<h2 id="modalTitle">Project Title</h2>
+							</div>
+							<div class="modal-body">
+								<img id="modalImage" src="" alt="Project Image">
+								<div id="modalDescription"></div>
+							</div>
+						</div>
 					</div>
+		
+					</div>
+				</div>
 
 				<!-- Sidebar -->
 				<div id="sidebar">
@@ -107,7 +244,6 @@ console.log("Portfolio ready after " + progress + " cups of coffee. Stay tuned!"
 									<li class="icon solid fa-envelope"><a href="#">quentincdp@orange.fr</a></li>
 									<li class="icon solid fa-phone">+33 6 40 25 37 70</li>
 									<li class="icon brands fa-linkedin">https://www.linkedin.com/in/quentin-crouts-de-paille-611908330/</li>
-								</ul>
 							</section>
 
 						<!-- Footer -->

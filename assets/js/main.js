@@ -285,10 +285,12 @@
 		}
 
 		// Function to check if the languages section is in view, and trigger progress bars
+		// Corrected version
 		function checkAndAnimateBars() {
 			var skillsSection = document.getElementById('languages');
-			if (isInViewport(skillsSection)) {
-				animateAllProgressBars(); // Trigger all progress bars once the section is in view
+			// Add this check: only run the code if skillsSection was found.
+			if (skillsSection && isInViewport(skillsSection)) {
+				animateAllProgressBars();
 			}
 		}
 
@@ -296,9 +298,171 @@
 		window.addEventListener('scroll', checkAndAnimateBars);
 		window.addEventListener('load', checkAndAnimateBars);
 
+		/* ---------------------------------------- */
+		/* INTERNATIONAL MOBILITY FUNCTIONALITY   */
+		/* ---------------------------------------- */
 
-  
+		function initializeMapInteractivity() {
+			const mapObject = document.getElementById("world-map");
+
+			if (!mapObject) {
+				return;
+			}
+
+			if (mapObject.dataset.mapReady === 'true') {
+				return;
+			}
+
+			// --- Flag System to solve the race condition ---
+			let isSvgLoaded = false;
+			let isDomReady = false;
+
+			const setupMap = () => {
+				// This function will only run when both flags are true.
+				if (!isSvgLoaded || !isDomReady || mapObject.dataset.mapReady === 'true') {
+					return;
+				}
+				mapObject.dataset.mapReady = 'true'; // Mark as initialized
+				console.log("DOM and SVG are ready. Setting up interactivity...");
+
+				// Now it's 100% safe to query for all elements
+				const popover = document.getElementById("country-popover");
+				const popoverTitle = document.getElementById("popover-title");
+				const popoverDescription = document.getElementById("popover-description");
+				const closeButton = document.querySelector(".close-popover");
+				const popoverLink = document.getElementById("popover-link");
+				const svgDoc = mapObject.contentDocument;
+
+				if (!svgDoc || !popover || !closeButton) {
+					console.error("Essential map or popover elements could not be found on final check.");
+					return;
+				}
+
+				const countryLinks = {
+					np: { text: 'See the Nepal Project', href: 'projects-&-productions.html' },
+				};
+				const interactiveCountries = ["frx", "np", "ca"];
+				let isPopoverVisible = false;
+
+				interactiveCountries.forEach(countryCode => {
+					const countryElement = svgDoc.getElementById(countryCode);
+					if (countryElement) {
+						countryElement.classList.add("clickable-country");
+						countryElement.addEventListener("click", (event) => {
+							event.stopPropagation();
+							const title = countryElement.dataset.title || "Details";
+							const description = countryElement.dataset.description || "No description provided.";
+							showPopover(title, description, countryElement, countryCode);
+						});
+					}
+				});
+
+				function showPopover(title, description, countryElement, countryCode) {
+					popoverTitle.textContent = title;
+					popoverDescription.innerHTML = description;
+					const linkData = countryLinks[countryCode];
+
+					if (linkData) {
+						popoverLink.style.display = 'block';
+						popoverLink.textContent = linkData.text;
+						popoverLink.href = linkData.href;
+					} else {
+						popoverLink.style.display = 'none';
+					}
+
+					popover.style.display = 'block';
+					popover.classList.remove('visible');
+
+					const mapRect = mapObject.getBoundingClientRect();
+					const countryRect = countryElement.getBoundingClientRect();
+					const popoverWidth = popover.offsetWidth;
+					const popoverHeight = popover.offsetHeight;
+					const margin = 15;
+
+					let left = mapRect.left + countryRect.right + window.scrollX + margin;
+					if (left + popoverWidth > window.scrollX + window.innerWidth) {
+						left = mapRect.left + countryRect.left + window.scrollX - popoverWidth - margin;
+					}
+					let top = mapRect.top + countryRect.top + window.scrollY + (countryRect.height / 2) - (popoverHeight / 2);
+					if (top < window.scrollY + margin) { top = window.scrollY + margin; }
+					if (top + popoverHeight > window.scrollY + window.innerHeight - margin) {
+						top = window.scrollY + window.innerHeight - popoverHeight - margin;
+					}
+
+					popover.style.left = `${left}px`;
+					popover.style.top = `${top}px`;
+					
+					setTimeout(() => { popover.classList.add('visible'); }, 10);
+					isPopoverVisible = true;
+				}
+
+				function hidePopover() {
+					if (!isPopoverVisible) return;
+					popover.classList.remove('visible');
+					setTimeout(() => { popover.style.display = 'none'; }, 300);
+					isPopoverVisible = false;
+				}
+
+				closeButton.addEventListener("click", (event) => {
+					event.stopPropagation();
+					hidePopover();
+				});
+				document.addEventListener('click', () => { if (isPopoverVisible) hidePopover(); });
+				popover.addEventListener('click', (event) => { event.stopPropagation(); });
+				document.addEventListener('keydown', (event) => {
+					if (event.key === 'Escape' && isPopoverVisible) hidePopover();
+				});
+			};
+
+			// --- Trigger 1: Wait for the SVG to load ---
+			const handleSvgLoad = () => {
+				isSvgLoaded = true;
+				setupMap(); // Try to run the setup
+			};
+
+			if (mapObject.contentDocument && mapObject.contentDocument.readyState === 'complete') {
+				handleSvgLoad();
+			} else {
+				mapObject.addEventListener('load', handleSvgLoad);
+			}
+
+			// --- Trigger 2: Wait for the main document to be ready ---
+			const handleDomReady = () => {
+				isDomReady = true;
+				setupMap(); // Try to run the setup
+			};
+
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', handleDomReady);
+			} else {
+				handleDomReady();
+			}
+		}
+
+		window.addEventListener('pageshow', initializeMapInteractivity);
+	/* ---------------------------------------- */
+	/* TIMELINE ANIMATION          */
+	/* ---------------------------------------- */
+
+			// Function to check if timeline items are in view
+			function checkTimeline() {
+				$('.timeline-item').each(function() {
+					// Use the existing isInViewport function
+					if (isInViewport(this)) {
+						$(this).addClass('in-view');
+					}
+				});
+			}
+
+			// Attach scroll and load events for the timeline
+			window.addEventListener('scroll', checkTimeline);
+			window.addEventListener('load', checkTimeline);
 })(jQuery);
+
+
+/* ---------------------------------------- */
+/*          CAREER DEVELOPMENT FUNCTIONALITY     */
+/* ---------------------------------------- */
 
 function toggleDetails(id) {
     var details = document.getElementById(id);
@@ -314,5 +478,225 @@ function toggleDetails(id) {
     }
 }
 
+/* ---------------------------------------- */
+/* PPP CAROUSEL LOGIC               */
+/* ---------------------------------------- */
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Select elements
+    const slides = document.querySelectorAll('.carousel-slide');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const indicator = document.getElementById('slide-indicator');
+    const container = document.getElementById('ppt-carousel-container');
+    
+    // Guard clause if carousel doesn't exist on page
+    if (!container) return;
+
+    let currentSlide = 0;
+    const totalSlides = slides.length;
+
+    function updateSlide(index) {
+        // Hide all
+        slides.forEach(slide => slide.classList.remove('active'));
+        
+        // Show current
+        slides[index].classList.add('active');
+        
+        // Update text
+        indicator.innerText = (index + 1) + " / " + totalSlides;
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        updateSlide(currentSlide);
+    }
+
+    function prevSlide() {
+        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+        updateSlide(currentSlide);
+    }
+
+    function toggleFullscreen() {
+        container.classList.toggle('fullscreen');
+        
+        // Change icon based on state
+        if (container.classList.contains('fullscreen')) {
+            fullscreenBtn.classList.remove('fa-expand');
+            fullscreenBtn.classList.add('fa-compress');
+            fullscreenBtn.innerText = " Exit";
+            document.body.style.overflow = 'hidden'; // Prevent scrolling background
+        } else {
+            fullscreenBtn.classList.remove('fa-compress');
+            fullscreenBtn.classList.add('fa-expand');
+            fullscreenBtn.innerText = " Fullscreen";
+            document.body.style.overflow = '';
+        }
+    }
+
+    // Event Listeners
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+    fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+    // Optional: Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        if (container.classList.contains('fullscreen')) {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+            if (e.key === 'Escape') toggleFullscreen();
+        }
+    });
+});
 
 
+/* ---------------------------------------- */
+/* EXPERIENCE TOGGLE FUNCTIONALITY      */
+/* ---------------------------------------- */
+
+/**
+ * Toggles the visibility of an experience detail box and updates the button text.
+ * @param {HTMLElement} btn - The button element that was clicked (passed as 'this').
+ * @param {string} id - The ID of the details div to toggle.
+ */
+function toggleDetails(btn, id) {
+    var details = document.getElementById(id);
+    
+    // Toggle the class for visibility
+    details.classList.toggle("show");
+
+    // Check visibility to update text
+    if (details.classList.contains("show")) {
+        btn.innerHTML = "Hide Key Achievements";
+        btn.classList.add("primary"); // Optional: Highlight button when active
+    } else {
+        btn.innerHTML = "View Key Achievements";
+        btn.classList.remove("primary");
+    }
+}
+
+
+/* ---------------------------------------- */
+/* WEB-NATIVE DECK LOGIC           */
+/* ---------------------------------------- */
+
+document.addEventListener('DOMContentLoaded', function() {
+    const deck = document.getElementById('deck-container');
+    
+    // Safety check: Exit if deck doesn't exist
+    if (!deck) return;
+
+    const slides = deck.querySelectorAll('.ppt-slide');
+    const prevBtn = document.getElementById('d-prev');
+    const nextBtn = document.getElementById('d-next');
+    const fullBtn = document.getElementById('d-full');
+    const indicator = document.getElementById('d-indicator');
+
+    let currentIndex = 0;
+    const totalSlides = slides.length;
+
+    function updateDeck(index) {
+        // Remove active class from all
+        slides.forEach(s => s.classList.remove('active'));
+        
+        // Add active to current
+        slides[index].classList.add('active');
+        
+        // Update Indicator (01 / 07)
+        indicator.innerText = "0" + (index + 1) + " / 0" + totalSlides;
+    }
+
+    // Navigation functions
+    function goNext() {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        updateDeck(currentIndex);
+    }
+
+    function goPrev() {
+        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+        updateDeck(currentIndex);
+    }
+
+    // Fullscreen Toggle
+    function toggleDeckFullscreen() {
+        deck.classList.toggle('fullscreen');
+        
+        if (deck.classList.contains('fullscreen')) {
+            fullBtn.classList.remove('fa-expand');
+            fullBtn.classList.add('fa-compress');
+            fullBtn.innerHTML = " Exit";
+            document.body.style.overflow = 'hidden'; // Stop page scroll
+        } else {
+            fullBtn.classList.remove('fa-compress');
+            fullBtn.classList.add('fa-expand');
+            fullBtn.innerHTML = " Fullscreen";
+            document.body.style.overflow = ''; // Restore page scroll
+        }
+    }
+
+    // Event Listeners
+    nextBtn.addEventListener('click', goNext);
+    prevBtn.addEventListener('click', goPrev);
+    fullBtn.addEventListener('click', toggleDeckFullscreen);
+
+    // Keyboard support
+    document.addEventListener('keydown', function(e) {
+        // Only if deck is visible or focused, but good for UX generally
+        // Check if deck is in fullscreen for stricter control
+        if (deck.classList.contains('fullscreen')) {
+            if (e.key === 'ArrowRight') goNext();
+            if (e.key === 'ArrowLeft') goPrev();
+            if (e.key === 'Escape') toggleDeckFullscreen();
+        }
+    });
+});
+
+
+/* ---------------------------------------- */
+/* PROJECT MODAL FUNCTIONALITY     */
+/* ---------------------------------------- */
+
+// Function to open modal
+// Now accepts the clicked element 'el' directly
+function openModal(el) {
+    var modal = document.getElementById("projectModal");
+    var title = document.getElementById("modalTitle");
+    var image = document.getElementById("modalImage");
+    var descContainer = document.getElementById("modalDescription");
+
+    // Get data from attributes
+    title.innerText = el.getAttribute("data-title");
+    image.src = el.getAttribute("data-img");
+    
+    // Get the hidden HTML content from within the card
+    var hiddenContent = el.querySelector(".full-description").innerHTML;
+    descContainer.innerHTML = hiddenContent;
+
+    // Show Modal
+    modal.style.display = "flex";
+    
+    // Lock background scrolling
+    document.body.classList.add("modal-open");
+}
+
+// Function to close modal
+function closeModal() {
+    document.getElementById("projectModal").style.display = "none";
+    document.body.classList.remove("modal-open");
+}
+
+// Close modal when clicking outside of the content box
+window.onclick = function(event) {
+    let modal = document.getElementById("projectModal");
+    if (event.target === modal) {
+        closeModal();
+    }
+};
+
+// Close on Escape Key
+document.addEventListener('keydown', function(event) {
+    if (event.key === "Escape") {
+        closeModal();
+    }
+});
