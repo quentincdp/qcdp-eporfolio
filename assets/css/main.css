@@ -2901,6 +2901,223 @@ button,
     .swot-grid { grid-template-columns: 1fr; }
 }
 
+/* =========================================
+   NEW SLIDE STYLES (INTERVIEWS & CIVIC)
+   ========================================= */
+
+/* --- Slide 03: Interviews Layout --- */
+.interview-wrapper {
+    display: flex;
+    gap: 20px;
+    height: 100%;
+}
+
+.interview-col {
+    flex: 1;
+    background: #fdfdfd;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    padding: 15px;
+}
+
+.interview-col h4 {
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    font-size: 1em;
+}
+
+.interview-col.confirm h4 { color: #2ecc71; border-color: #2ecc71; }
+.interview-col.refine h4 { color: #3d4449; border-color: #3d4449; }
+
+/* Insight Items (The "Yes" List) */
+.insight-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    border-bottom: 1px dotted #e0e0e0;
+    padding-bottom: 10px;
+}
+.insight-item:last-child { border-bottom: none; margin-bottom: 0; }
+
+.insight-item .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 12px;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.insight-item strong {
+    display: block;
+    font-size: 0.9em;
+    color: #3d4449;
+    line-height: 1.2;
+}
+
+.insight-item .source {
+    font-size: 0.75em;
+    color: #f56a6a;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.insight-item p {
+    font-size: 0.8em;
+    margin: 0;
+    color: #666;
+    line-height: 1.4;
+}
+
+/* Mini Insights (The "No" List) */
+.insight-mini {
+    background: #f4f4f4;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+.insight-mini strong {
+    color: #f56a6a;
+    font-size: 0.85em;
+    text-transform: uppercase;
+}
+.insight-mini p {
+    font-size: 0.8em;
+    margin: 5px 0 0 0;
+}
+
+/* --- Slide 06: Civic Grid --- */
+.civic-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.civic-item {
+    flex: 1;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.civic-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    border-color: #f56a6a;
+}
+
+.civic-img-container {
+    position: relative;
+    height: 120px;
+    overflow: hidden;
+}
+
+.civic-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.civic-badge {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #f56a6a;
+    color: #fff;
+    padding: 3px 10px;
+    font-size: 0.7em;
+    font-weight: bold;
+    border-radius: 6px 0 0 0;
+}
+
+.civic-text {
+    padding: 15px;
+    text-align: center;
+}
+
+.civic-text h5 {
+    font-size: 0.95em;
+    margin-bottom: 5px;
+    color: #3d4449;
+}
+
+.civic-text p {
+    font-size: 0.8em;
+    margin: 0;
+    line-height: 1.4;
+    color: #777;
+}
+
+.civic-text strong { color: #555; }
+.civic-desc { margin-top: 8px !important; font-style: italic; }
+
+/* Responsive Adjustments for new slides */
+@media screen and (max-width: 768px) {
+    .interview-wrapper { flex-direction: column; }
+    .civic-grid { flex-direction: column; }
+    .civic-img-container { height: 150px; }
+}
+
+/* =========================================
+   PRINT / DOWNLOAD STYLES
+   ========================================= */
+@media print {
+    /* 1. Cacher tout le site par défaut */
+    body * {
+        visibility: hidden;
+        background: #fff;
+    }
+
+    /* 2. Rendre visible uniquement le conteneur de la présentation et son contenu */
+    #deck-container, #deck-container * {
+        visibility: visible;
+    }
+
+    /* 3. Repositionner le deck en haut de la page d'impression */
+    #deck-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        border: none;
+        box-shadow: none;
+        max-width: none !important;
+    }
+
+    /* 4. Configuration des slides pour l'impression */
+    .ppt-slide {
+        display: block !important; /* Affiche toutes les slides (écrase le display:none du carousel) */
+        opacity: 1 !important;     /* Rend tout visible */
+        position: relative !important; /* Supprime la superposition absolue */
+        width: 100% !important;
+        height: 100vh !important; /* Force chaque slide à prendre une page entière */
+        page-break-after: always; /* Force une nouvelle page après chaque slide */
+        padding: 40px !important; /* Espacement propre pour le papier A4 */
+        border: 2px solid #eee; /* Cadre léger pour la finition */
+        box-sizing: border-box;
+    }
+
+    /* Éviter une page blanche à la fin si possible */
+    .ppt-slide:last-child {
+        page-break-after: avoid;
+    }
+
+    /* 5. Cacher les contrôles de navigation sur le PDF */
+    .deck-controls, .deck-viewport {
+        padding-top: 0 !important; /* Enlève le ratio 16:9 pour laisser le contenu respirer */
+    }
+    .deck-controls {
+        display: none !important;
+    }
+}
+
 /* ----------------------------------------------------------*/
 /* Education */
 /* General Styles */

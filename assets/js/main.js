@@ -592,6 +592,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const nextBtn = document.getElementById('d-next');
     const fullBtn = document.getElementById('d-full');
     const indicator = document.getElementById('d-indicator');
+	const downloadBtn = document.getElementById('d-download');
 
     let currentIndex = 0;
     const totalSlides = slides.length;
@@ -633,6 +634,12 @@ document.addEventListener('DOMContentLoaded', function() {
             fullBtn.innerHTML = " Fullscreen";
             document.body.style.overflow = ''; // Restore page scroll
         }
+    }
+
+	if (downloadBtn) {
+        downloadBtn.addEventListener('click', function() {
+            window.print(); // Déclenche la fenêtre d'impression/sauvegarde PDF du navigateur
+        });
     }
 
     // Event Listeners
